@@ -1,8 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import GameLoader from './GameLoader';
+//import MoveBox from './GameLoader';
+import Board from './Board';
+import Game from './Game';
 
-const Board = require("./Board.js");
-const Game = require('./Game.js');
+//const Board = require("./Board.js");
+//const Game = require('./Game.js');
 
 let chess_gm = new Game();
 
@@ -21,3 +25,5 @@ chess_gm.make_move('B', 'Q', 'd8', 'd5');
 console.log(chess_gm);
 console.log(chess_gm.game.moves);
 console.log(chess_gm.game.board_position.board_position);
+
+ReactDOM.render(<GameLoader />, document.getElementById('root'));
