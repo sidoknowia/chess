@@ -2,10 +2,7 @@
   "name": "chess",
   "version": "1.0.0",
   "description": "Chess Game Implementation in JS",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "main": "./src/index.js",
   "keywords": [
     "chess",
     "js",
@@ -16,5 +13,28 @@
     "ML"
   ],
   "author": "Siddharth Patel",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sidoknowia/chess.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sidoknowia/chess/issues"
+  },
+  "homepage": "https://github.com/sidoknowia/chess#readme",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "webpack": "^3.8.1"
+  },
+  "dependencies": {
+    "react": "^16.1.1",
+    "react-dom": "^16.1.1",
+    "requirejs-babel": "0.0.9"
+  },
+  "paths": {
+    "es6": "node_modules/requirejs-babel/es6",
+    "babel": "node_modules/requirejs-babel/babel-4.6.6.min"
+  }
 }
