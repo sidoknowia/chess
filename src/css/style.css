@@ -1,0 +1,52 @@
+html {
+    margin-right: 0px;
+    padding-right: 0px;
+}
+
+body {
+    padding: 50px;
+    color: #5a5a5a;
+    margin-right: 0px;
+  
+}
+
+.container{
+    width:100%;
+    height:100%;
+}
+
+.row{
+    display:grid;
+    padding-left:15%;
+    padding-right:15%;
+}
+
+.chess-board{
+	min-height: 640px;
+	max-height: 640px;
+	min-width: 640px;
+	max-width: 640px;
+	border: 2px solid black;
+}
+
+.block{
+	border: 1px solid black;
+	float: left;
+	min-height: 76px;
+	max-height: 80px;
+	min-width: 78px;
+	max-width: 80px;
+}
+
+.white-block{
+
+}
+
+.black-block{
+	background-color: #d0cb96;
+}
+
+.piece{
+	font-size: 70px;
+	cursor: pointer;
+}
