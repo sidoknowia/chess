@@ -7,18 +7,22 @@ body {
     padding: 50px;
     color: #5a5a5a;
     margin-right: 0px;
+    max-width: 960px;
   
 }
 
 .container{
-    width:100%;
+	display: grid;
+    width:960px;
     height:100%;
+    padding-left:15%;
+    padding-right:15%;
 }
 
 .row{
-    display:grid;
-    padding-left:15%;
-    padding-right:15%;
+    display:inline-block;
+    width: inherit;
+  
 }
 
 .chess-board{
@@ -49,4 +53,85 @@ body {
 .piece{
 	font-size: 70px;
 	cursor: pointer;
+}
+
+.span1{
+	
+	display:inline-block;
+	max-width: 80px;
+	min-width: 80px;
+}
+
+.span2{
+	
+	display:inline-block;
+	max-width: 160px;
+	min-width: 160px;
+}
+
+.span3{
+	
+	display:inline-block;
+	max-width: 240px;
+	min-width: 240px;
+}
+
+.span4{
+	display:inline-block;
+	max-width: 320px;
+	min-width: 320px;
+}
+
+.span5{
+	display:inline-block;
+	max-width: 400px;
+	min-width: 400px;
+}
+
+.span6{
+	display:inline-block;
+	max-width: 480px;
+	min-width: 480px;
+}
+
+.span7{
+	display:inline-block;
+	max-width: 560px;
+	min-width: 560px;
+}
+
+.span8{
+	display:inline-block;
+	max-width: 640px;
+	min-width: 640px;
+}
+
+.span9{
+	display:inline-block;
+	max-width: 720px;
+	min-width: 720px;
+}
+
+.span10{
+	display:inline-block;
+	max-width: 800px;
+	min-width: 800px;
+}
+
+.span11{
+	display:inline-block;
+	max-width: 880px;
+	min-width: 880px;
+}
+
+.span12{
+	display:inline-block;
+	max-width: 960px;
+	min-width: 960px;
+}
+
+.move-box{
+	min-height: 640px;
+	max-height: 640px;
+	border: 1px solid black;
 }
