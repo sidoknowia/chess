@@ -23,6 +23,25 @@ export default class Game extends Component{
 				'piece' : '',
 				'start' : ''
 				//'end'   : ''
+			},
+			pieceNotations : {
+				'B' : {
+					'R' : '9820', //'\U265C', //'\u03A9' //'&#9820;',
+					'N' : "9822",
+					'B' : "9821",
+					'Q' : "9819",
+					'K' : "9818",
+					'P' : "9823"
+				},
+
+				'W' : {
+					'R' : "9814",
+					'N' : "9816",
+					'B' : "9815",
+					'Q' : "9813",
+					'K' : "9812",
+					'P' : "9817"
+				}
 			}
 		};
 
@@ -57,7 +76,7 @@ export default class Game extends Component{
 			}
 		}
 
-		//console.log(move);
+		console.log(move);
 	}
 
 	update_board_position(color, piece, start, end, gm) {
@@ -159,7 +178,51 @@ export default class Game extends Component{
 	    console.log(this.state);
 	};
 
-	
+	getPieceNotiation(id){
+
+		let bp = this.state.game.board_position;
+		console.log(bp);
+
+		for (const color in bp){
+			let clr = color;	
+			//console.log(clr);
+			var clrObj = bp[clr];
+			//console.log(clrObj);
+
+
+			for(const pcs in clrObj){
+				let pc = pcs;
+				
+				var pcsObj = clrObj[pc];
+				// console.log(pcs);
+				// console.log(pcsObj);
+				for(var i = 0; i < pcsObj.length; i++){
+					if(pcsObj[i] == id){
+
+						// this.cl_pclr = clr;
+						// this.cl_pc = pc;
+						// this.cl_pcn = String.fromCharCode( this.state.pieceNotations[clr][pc] );
+
+						// this.setState({
+						// 	pClr : clr,
+						// 	pc 	 : pc,
+						// 	pcN  : String.fromCharCode( this.state.pieceNotations[clr][pc] )
+						// });
+
+						console.log(pcsObj[i]);
+						console.log(clr);
+						console.log(pcs);
+						console.log(String.fromCharCode( this.state.pieceNotations[clr][pc] ));
+
+						return String.fromCharCode( this.state.pieceNotations[clr][pc] );
+					}
+				}
+			}
+
+		}
+
+		return "";
+	}
 	
 
 	render(){
@@ -169,91 +232,213 @@ export default class Game extends Component{
 			<div className="chess-board">
 
 				<div className="block white-block" id="a8" onClick={(e) => this.activateOrMovePiece(e) }>
-					<Piece {...this.state.game.board_position} cl_id = {"a8"}  />
+					<Piece {...this.state.game.board_position} cl_id = {"a8"}  cl_pc = {""} cl_pclr = {""} cl_pcn = {this.getPieceNotiation("a8")}/>
 				</div>
-				
-				<div className="block black-block" id="b8"><span className="piece">&#9822;</span></div>
-				<div className="block white-block" id="c8"><span className="piece">&#9821;</span></div>
-				<div className="block black-block" id="d8"><span className="piece">&#9819;</span></div>
-				<div className="block white-block" id="e8"><span className="piece">&#9818;</span></div>
-				<div className="block black-block" id="f8"><span className="piece">&#9821;</span></div>
-				<div className="block white-block" id="g8"><span className="piece">&#9822;</span></div>
-				<div className="block black-block" id="h8"><span className="piece">&#9820;</span></div>
+				<div className="block black-block" id="b8" onClick={(e) => this.activateOrMovePiece(e) }>
+					<Piece {...this.state.game.board_position} cl_id = {"b8"}  cl_pc = {""} cl_pclr = {""} cl_pcn = {this.getPieceNotiation("a8")}/>
+				</div>
+				<div className="block white-block" id="c8" onClick={(e) => this.activateOrMovePiece(e) }>
+					<Piece {...this.state.game.board_position} cl_id = {"c8"}  cl_pc = {""} cl_pclr = {""} cl_pcn = {this.getPieceNotiation("a8")}/>
+				</div>
+				<div className="block black-block" id="d8" onClick={(e) => this.activateOrMovePiece(e) }>
+					<Piece {...this.state.game.board_position} cl_id = {"d8"}  cl_pc = {""} cl_pclr = {""} cl_pcn = {this.getPieceNotiation("a8")}/>
+				</div>
+				<div className="block white-block" id="e8" onClick={(e) => this.activateOrMovePiece(e) }>
+					<Piece {...this.state.game.board_position} cl_id = {"e8"}  cl_pc = {""} cl_pclr = {""} cl_pcn = {this.getPieceNotiation("a8")}/>
+				</div>
+				<div className="block black-block" id="f8" onClick={(e) => this.activateOrMovePiece(e) }>
+					<Piece {...this.state.game.board_position} cl_id = {"f8"}  cl_pc = {""} cl_pclr = {""} cl_pcn = {this.getPieceNotiation("a8")}/>
+				</div>
+				<div className="block white-block" id="g8" onClick={(e) => this.activateOrMovePiece(e) }>
+					<Piece {...this.state.game.board_position} cl_id = {"g8"}  cl_pc = {""} cl_pclr = {""} cl_pcn = {this.getPieceNotiation("a8")}/>
+				</div>
+				<div className="block black-block" id="h8" onClick={(e) => this.activateOrMovePiece(e) }>
+					<Piece {...this.state.game.board_position} cl_id = {"h8"}  cl_pc = {""} cl_pclr = {""} cl_pcn = {this.getPieceNotiation("a8")}/>
+				</div>
 
-				<div className="block white-block" id="a7" onClick={(e) => this.activateOrMovePiece(e) }>
+				
+				<div className="block black-block" id="a7" onClick={(e) => this.activateOrMovePiece(e) }>
 					<Piece {...this.state.game.board_position} cl_id = {"a7"}  />
 				</div>
+				<div className="block white-block" id="b7" onClick={(e) => this.activateOrMovePiece(e)}>
+					<Piece {...this.state.game.board_position} cl_id = {"b7"}  />
+				</div>
+				<div className="block black-block" id="c7" onClick={(e) => this.activateOrMovePiece(e)}>
+					<Piece {...this.state.game.board_position} cl_id = {"c7"}  />
+				</div>
+				<div className="block white-block" id="d7" onClick={(e) => this.activateOrMovePiece(e)}>
+					<Piece {...this.state.game.board_position} cl_id = {"d7"}  />
+				</div>
+				<div className="block black-block" id="e7" onClick={(e) => this.activateOrMovePiece(e)}>
+					<Piece {...this.state.game.board_position} cl_id = {"e7"}  />
+				</div>
+				<div className="block white-block" id="f7" onClick={(e) => this.activateOrMovePiece(e)}>
+					<Piece {...this.state.game.board_position} cl_id = {"f7"}  />
+				</div>
+				<div className="block black-block" id="g7" onClick={(e) => this.activateOrMovePiece(e)}>
+					<Piece {...this.state.game.board_position} cl_id = {"g7"}  />
+				</div>
+				<div className="block white-block" id="h7" onClick={(e) => this.activateOrMovePiece(e)}>
+					<Piece {...this.state.game.board_position} cl_id = {"h7"}  />
+				</div>
+			
+
+				<div className="block white-block" id="a6" onClick={(e) => this.activateOrMovePiece(e)}>
+					<Piece {...this.state.game.board_position} cl_id = {"a6"}  />
+				</div>
+				<div className="block black-block" id="b6" onClick={(e) => this.activateOrMovePiece(e)}>
+					<Piece {...this.state.game.board_position} cl_id = {"b6"}  />
+				</div>
+				<div className="block white-block" id="c6" onClick={(e) => this.activateOrMovePiece(e)}>
+					<Piece {...this.state.game.board_position} cl_id = {"c6"}  />
+				</div>
+				<div className="block black-block" id="d6" onClick={(e) => this.activateOrMovePiece(e)}>
+					<Piece {...this.state.game.board_position} cl_id = {"d6"}  />
+				</div>
+				<div className="block white-block" id="e6" onClick={(e) => this.activateOrMovePiece(e)}>
+					<Piece {...this.state.game.board_position} cl_id = {"e6"}  />
+				</div>
+				<div className="block black-block" id="f6" onClick={(e) => this.activateOrMovePiece(e)}>
+					<Piece {...this.state.game.board_position} cl_id = {"f6"}  />
+				</div>
+				<div className="block white-block" id="g6" onClick={(e) => this.activateOrMovePiece(e)}>
+					<Piece {...this.state.game.board_position} cl_id = {"g6"}  />
+				</div>
+				<div className="block black-block" id="h6" onClick={(e) => this.activateOrMovePiece(e)}>
+					<Piece {...this.state.game.board_position} cl_id = {"h6"}  />
+				</div>
 				
-				<div className="block white-block" id="b7"><span className="piece">&#9823;</span></div>
-				<div className="block black-block" id="c7"><span className="piece">&#9823;</span></div>
-				<div className="block white-block" id="d7"><span className="piece">&#9823;</span></div>
-				<div className="block black-block" id="e7"><span className="piece">&#9823;</span></div>
-				<div className="block white-block" id="f7"><span className="piece">&#9823;</span></div>
-				<div className="block black-block" id="g7"><span className="piece">&#9823;</span></div>
-				<div className="block white-block" id="h1"><span className="piece">&#9823;</span></div>
 
+				<div className="block black-block" id="a5" onClick={(e) => this.activateOrMovePiece(e)}>
+					<Piece {...this.state.game.board_position} cl_id = {"a5"}  />
+				</div>
+				<div className="block white-block" id="b5" onClick={(e) => this.activateOrMovePiece(e)}>
+					<Piece {...this.state.game.board_position} cl_id = {"b5"}  />
+				</div>
+				<div className="block black-block" id="c5" onClick={(e) => this.activateOrMovePiece(e)}>
+					<Piece {...this.state.game.board_position} cl_id = {"c5"}  />
+				</div>
+				<div className="block white-block" id="d5" onClick={(e) => this.activateOrMovePiece(e)}>
+					<Piece {...this.state.game.board_position} cl_id = {"d5"}  />
+				</div>
+				<div className="block black-block" id="e5" onClick={(e) => this.activateOrMovePiece(e)}>
+					<Piece {...this.state.game.board_position} cl_id = {"e5"}  />
+				</div>
+				<div className="block white-block" id="f5" onClick={(e) => this.activateOrMovePiece(e)}>
+					<Piece {...this.state.game.board_position} cl_id = {"f5"}  />
+				</div>
+				<div className="block black-block" id="g5" onClick={(e) => this.activateOrMovePiece(e)}>
+					<Piece {...this.state.game.board_position} cl_id = {"g5"}  />
+				</div>
+				<div className="block white-block" id="h5" onClick={(e) => this.activateOrMovePiece(e)}>
+					<Piece {...this.state.game.board_position} cl_id = {"h5"}  />
+				</div>
+				
 
-				<div className="block white-block" id="a6"></div>
-				<div className="block black-block" id="b6"></div>
-				<div className="block white-block" id="c6"></div>
-				<div className="block black-block" id="d6"></div>
-				<div className="block white-block" id="e6"></div>
-				<div className="block black-block" id="f6"></div>
-				<div className="block white-block" id="g6"></div>
-				<div className="block black-block" id="h6"></div>
-
-				<div className="block black-block" id="a5"></div>
-				<div className="block white-block" id="b5"></div>
-				<div className="block black-block" id="c5"></div>
-				<div className="block white-block" id="d5"></div>
-				<div className="block black-block" id="e5"></div>
-				<div className="block white-block" id="f5"></div>
-				<div className="block black-block" id="g5"></div>
-				<div className="block white-block" id="h5"></div>
-
-				<div className="block white-block" id="a4" onClick={(e) => this.moveactivateOrMovePiece(e) }></div>
-				<div className="block black-block" id="b4"></div>
-				<div className="block white-block" id="c4"></div>
-				<div className="block black-block" id="d4"></div>
-				<div className="block white-block" id="e4"></div>
-				<div className="block black-block" id="f4"></div>
-				<div className="block white-block" id="g4"></div>
-				<div className="block black-block" id="h4"></div>
+				<div className="block white-block" id="a4" onClick={(e) => this.activateOrMovePiece(e)}>
+					<Piece {...this.state.game.board_position} cl_id = {"a4"}  />
+				</div>
+				<div className="block black-block" id="b4" onClick={(e) => this.activateOrMovePiece(e)}>
+					<Piece {...this.state.game.board_position} cl_id = {"b4"}  />
+				</div>
+				<div className="block white-block" id="c4" onClick={(e) => this.activateOrMovePiece(e)}>
+					<Piece {...this.state.game.board_position} cl_id = {"c4"}  />
+				</div>
+				<div className="block black-block" id="d4" onClick={(e) => this.activateOrMovePiece(e)}>
+					<Piece {...this.state.game.board_position} cl_id = {"d4"}  />
+				</div>
+				<div className="block white-block" id="e4" onClick={(e) => this.activateOrMovePiece(e)}>
+					<Piece {...this.state.game.board_position} cl_id = {"e4"}  />
+				</div>
+				<div className="block black-block" id="f4" onClick={(e) => this.activateOrMovePiece(e)}>
+					<Piece {...this.state.game.board_position} cl_id = {"f4"}  />
+				</div>
+				<div className="block white-block" id="g4" onClick={(e) => this.activateOrMovePiece(e)}>
+					<Piece {...this.state.game.board_position} cl_id = {"g4"}  />
+				</div>
+				<div className="block black-block" id="h4" onClick={(e) => this.activateOrMovePiece(e)}>
+					<Piece {...this.state.game.board_position} cl_id = {"h4"}  />
+				</div>
+				
 
 				<div className="block black-block" id="a3" onClick={(e) => this.activateOrMovePiece(e)}>
-					<Piece ref = {this.state.game.board_position} cl_id = {"a3"}  />
+					<Piece {...this.state.game.board_position} cl_id = {"a3"}  />
 				</div>
-				<div className="block white-block" id="b3"></div>
-				<div className="block black-block" id="c3"></div>
-				<div className="block white-block" id="d3"></div>
-				<div className="block black-block" id="e3"></div>
-				<div className="block white-block" id="f3"></div>
-				<div className="block black-block" id="g3"></div>
-				<div className="block white-block" id="h3"></div>
-
-				<div className="block white-block" id="a2" onClick={(e) => this.activateOrMovePiece(e) }>
-					<Piece {...this.state.game.board_position} cl_id = {"a2"}  />
+				<div className="block white-block" id="b3" onClick={(e) => this.activateOrMovePiece(e)}>
+					<Piece {...this.state.game.board_position} cl_id = {"b3"}  />
+				</div>
+				<div className="block black-block" id="c3" onClick={(e) => this.activateOrMovePiece(e)}>
+					<Piece {...this.state.game.board_position} cl_id = {"c3"}  />
+				</div>
+				<div className="block white-block" id="d3" onClick={(e) => this.activateOrMovePiece(e)}>
+					<Piece {...this.state.game.board_position} cl_id = {"d3"}  />
+				</div>
+				<div className="block black-block" id="e3" onClick={(e) => this.activateOrMovePiece(e)}>
+					<Piece {...this.state.game.board_position} cl_id = {"e3"}  />
+				</div>
+				<div className="block white-block" id="f3" onClick={(e) => this.activateOrMovePiece(e)}>
+					<Piece {...this.state.game.board_position} cl_id = {"f3"}  />
+				</div>
+				<div className="block black-block" id="g3" onClick={(e) => this.activateOrMovePiece(e)}>
+					<Piece {...this.state.game.board_position} cl_id = {"g3"}  />
+				</div>
+				<div className="block white-block" id="h3" onClick={(e) => this.activateOrMovePiece(e)}>
+					<Piece {...this.state.game.board_position} cl_id = {"h3"}  />
 				</div>
 				
-				<div className="block black-block" id="b2"><span className="piece">&#9817;</span></div>
-				<div className="block white-block" id="c2"><span className="piece">&#9817;</span></div>
-				<div className="block black-block" id="d2"><span className="piece">&#9817;</span></div>
-				<div className="block white-block" id="e2"><span className="piece">&#9817;</span></div>
-				<div className="block black-block" id="f2"><span className="piece">&#9817;</span></div>
-				<div className="block white-block" id="g2"><span className="piece">&#9817;</span></div>
-				<div className="block black-block" id="h2"><span className="piece">&#9817;</span></div>
+
+				<div className="block white-block" id="a2" onClick={(e) => this.activateOrMovePiece(e) }>
+					<Piece {...this.state.game.board_position} cl_id = {"a2"}  cl_pc = {""} cl_pclr = {""} cl_pcn = {""} />
+				</div>
+				<div className="block black-block" id="b2" onClick={(e) => this.activateOrMovePiece(e)}>
+					<Piece {...this.state.game.board_position} cl_id = {"b2"}  />
+				</div>
+				<div className="block white-block" id="c2" onClick={(e) => this.activateOrMovePiece(e)}>
+					<Piece {...this.state.game.board_position} cl_id = {"c2"}  />
+				</div>
+				<div className="block black-block" id="d2" onClick={(e) => this.activateOrMovePiece(e)}>
+					<Piece {...this.state.game.board_position} cl_id = {"d2"}  />
+				</div>
+				<div className="block white-block" id="e2" onClick={(e) => this.activateOrMovePiece(e)}>
+					<Piece {...this.state.game.board_position} cl_id = {"e2"}  />
+				</div>
+				<div className="block black-block" id="f2" onClick={(e) => this.activateOrMovePiece(e)}>
+					<Piece {...this.state.game.board_position} cl_id = {"f2"}  />
+				</div>
+				<div className="block white-block" id="g2" onClick={(e) => this.activateOrMovePiece(e)}>
+					<Piece {...this.state.game.board_position} cl_id = {"g2"}  />
+				</div>
+				<div className="block black-block" id="h2" onClick={(e) => this.activateOrMovePiece(e)}>
+					<Piece {...this.state.game.board_position} cl_id = {"h2"}  />
+				</div>
+				
 
 				<div className="block black-block" id="a1" onClick={(e) => this.activateOrMovePiece(e) }>
 					<Piece {...this.state.game.board_position} cl_id = {"a1"}  />
 				</div>
+				<div className="block white-block" id="b1" onClick={(e) => this.activateOrMovePiece(e) }>
+					<Piece {...this.state.game.board_position} cl_id = {"b1"}  />
+				</div>
+				<div className="block black-block" id="c1" onClick={(e) => this.activateOrMovePiece(e) }>
+					<Piece {...this.state.game.board_position} cl_id = {"c1"}  />
+				</div>
+				<div className="block white-block" id="d1" onClick={(e) => this.activateOrMovePiece(e) }>
+					<Piece {...this.state.game.board_position} cl_id = {"d1"}  />
+				</div>
+				<div className="block black-block" id="e1" onClick={(e) => this.activateOrMovePiece(e) }>
+					<Piece {...this.state.game.board_position} cl_id = {"e1"}  />
+				</div>
+				<div className="block white-block" id="f1" onClick={(e) => this.activateOrMovePiece(e) }>
+					<Piece {...this.state.game.board_position} cl_id = {"f1"}  />
+				</div>
+				<div className="block black-block" id="g1" onClick={(e) => this.activateOrMovePiece(e) }>
+					<Piece {...this.state.game.board_position} cl_id = {"g1"}  />
+				</div>
+				<div className="block white-block" id="h1" onClick={(e) => this.activateOrMovePiece(e) }>
+					<Piece {...this.state.game.board_position} cl_id = {"h1"}  />
+				</div>
 				
-				<div className="block white-block" id="b1"><span className="piece">&#9816;</span></div>
-				<div className="block black-block" id="c1"><span className="piece">&#9815;</span></div>
-				<div className="block white-block" id="d1"><span className="piece">&#9813;</span></div>
-				<div className="block black-block" id="e1"><span className="piece">&#9812;</span></div>
-				<div className="block white-block" id="f1"><span className="piece">&#9815;</span></div>
-				<div className="block black-block" id="g1"><span className="piece">&#9816;</span></div>
-				<div className="block white-block" id="h1"><span className="piece">&#9814;</span></div>
+				
 			</div>
 		)
 		

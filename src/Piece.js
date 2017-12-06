@@ -32,6 +32,10 @@ export default class Piece extends Component{
 			pcN : ''
 		}
 
+		this.cl_pclr = '';
+		this.cl_pc = '',
+		this.cl_pcn = '';
+
 		//this.activatePiece = this.activatePiece.bind(this);
 		//console.log(this.state.game);
 		//this.clr = '',
@@ -47,6 +51,10 @@ export default class Piece extends Component{
 	}
 
 	componentWillMount(){
+		//this.getPieceNotiation(this.props.cl_id);
+	}
+
+	componentWillReceiveProps(){
 		this.getPieceNotiation(this.props.cl_id);
 	}
 
@@ -71,16 +79,21 @@ export default class Piece extends Component{
 				for(var i = 0; i < pcsObj.length; i++){
 					if(pcsObj[i] == id){
 
-						this.setState({
-							pClr : clr,
-							pc 	 : pc,
-							pcN  : String.fromCharCode( this.state.pieceNotations[clr][pc] )
-						});
+						this.cl_pclr = clr;
+						this.cl_pc = pc;
+						this.cl_pcn = String.fromCharCode( this.state.pieceNotations[clr][pc] );
+
+						// this.setState({
+						// 	pClr : clr,
+						// 	pc 	 : pc,
+						// 	pcN  : String.fromCharCode( this.state.pieceNotations[clr][pc] )
+						// });
 
 						console.log(pcsObj[i]);
 						console.log(clr);
 						console.log(pcs);
 						console.log(String.fromCharCode( this.state.pieceNotations[clr][pc] ));
+
 						return String.fromCharCode( this.state.pieceNotations[clr][pc] );
 					}
 				}
@@ -94,8 +107,9 @@ export default class Piece extends Component{
 
 	render(){
 		//let cl = "block "+ this.props.cl_n;
+		this.getPieceNotiation(this.props.cl_id);
 		return(
-			<span className="piece" datapiece={this.state.pc} datacolor={this.state.pClr} >{this.state.pcN}</span>
+			<span className="piece" datacolor={this.cl_pclr} datapiece={this.cl_pc} >{this.cl_pcn}</span>
 		)
 	}
 
