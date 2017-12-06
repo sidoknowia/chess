@@ -25,36 +25,6 @@ body {
   
 }
 
-.chess-board{
-	min-height: 640px;
-	max-height: 640px;
-	min-width: 640px;
-	max-width: 640px;
-	border: 2px solid black;
-}
-
-.block{
-	border: 1px solid black;
-	float: left;
-	min-height: 76px;
-	max-height: 80px;
-	min-width: 78px;
-	max-width: 80px;
-}
-
-.white-block{
-
-}
-
-.black-block{
-	background-color: #d0cb96;
-}
-
-.piece{
-	font-size: 70px;
-	cursor: pointer;
-}
-
 .span1{
 	
 	display:inline-block;
@@ -134,4 +104,34 @@ body {
 	min-height: 640px;
 	max-height: 640px;
 	border: 1px solid black;
+}
+
+.white-block{
+
+}
+
+.black-block{
+	background-color: #d0cb96;
+}
+
+.piece{
+	font-size: 70px;
+	cursor: pointer;
+}
+
+.chess-board{
+	min-height: 640px;
+	max-height: 640px;
+	min-width: 640px;
+	max-width: 640px;
+	border: 2px solid black;
+}
+
+.block{
+	border: 1px solid black;
+	float: left;
+	min-height: 76px;
+	max-height: 80px;
+	min-width: 78px;
+	max-width: 80px;
 }

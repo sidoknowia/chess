@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import GameLoader from './GameLoader';
 //import MoveBox from './MoveBox';
-import Board from './Board';
-import Game from './Game';
+//import Board from './Board';
+//import Game from './Game';
 
 //const Board = require("./Board.js");
 //const Game = require('./Game.js');

@@ -1,6 +1,9 @@
+//import React from 'react';
+
 class Board{
 
 	constructor(){
+		//super();
 		this.board_position = {
 			'W' : {
 				'R' : ['a1', 'h1'],

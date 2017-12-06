@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import Board from './Board';
-import Game from './Game';
+//import Game from './Game';
 
 export default class MoveBox extends Component{
 	constructor(){
 		super();
-		let chess_gm = new Game();
+		//let chess_gm = new Game();
 	}
 
 	render(){
