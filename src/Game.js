@@ -51,7 +51,7 @@ export default class Game extends Component{
 
 	make_move(color = null, piece ,start, end){
 		let move;
-		let gm = this.state.game.moves;
+		let gm = JSON.parse(JSON.stringify(this.state.game.moves));
 		let valid = false;
 
 		if(color == 'W'){
@@ -80,6 +80,7 @@ export default class Game extends Component{
 	}
 
 	update_board_position(color, piece, start, end, gm) {
+//JSON.parse(JSON.stringify(
 
 		let bpObj = this.state.game.board_position;
 		console.log("bpObj : " , bpObj)
@@ -129,16 +130,16 @@ export default class Game extends Component{
 				}
 			}
 
-			console.log(this.state.game.board_position);
-			console.log(bpObj);
+			console.log("board_position : " , this.state.game.board_position);
+			console.log("Clone Obj : " , bpObj);
 		}
 
 		this.setState({
 	      activePiece: {
 	      	'color' : '',
 			'piece' : '',
-			'start' : ''
-			//'end'   : ''
+			'start' : '',
+			'end'   : ''
 	      },
 	      game : {
 	      	board_position : bpObj,
@@ -146,17 +147,31 @@ export default class Game extends Component{
 	      }
 	    });
 
+
+		console.log("after update ",this.state.game);
 		this.forceUpdate();
 	};
 
 	activateOrMovePiece (e, color, piece) {
 		//console.log(color);
 		//console.log(piece);
-		console.log(e.target.parentNode.id);
-		console.log(e.target.id);
-		//console.log(e.target.getAttribute('datapiece'));
+		console.log("parent - self id : ", e.target.parentNode.id); //d2
+		console.log("target - " ,e.target.id); //null
+		//console.log()
+		console.log(e.target.getAttribute('datacolor'));
 
-		if(!e.target.id){
+		if(this.state.activePiece.color != "" ){ console.log("no active color");
+			if(e.target.getAttribute('datacolor') == "W" || e.target.getAttribute('datacolor') == "B" ){ 
+				console.log("no active color of false");
+				if( e.target.getAttribute('datacolor') != this.state.activePiece.color ){
+					alert("Opponent child - takes move");
+					this.make_move(this.state.activePiece.color, this.state.activePiece.piece, this.state.activePiece.start, e.target.parentNode.id);
+					return "";
+				}
+			}
+		}
+
+		if (!e.target.id){
 
 			this.setState({
 		      activePiece: {
@@ -166,8 +181,10 @@ export default class Game extends Component{
 				//'end'   : ''
 		      }
 		    });
+			return "";
+		}
 
-		} else if( e.target.id ) { alert("no child - make move");
+		if( e.target.id ) { alert("no child - make move");
 			this.make_move(this.state.activePiece.color, this.state.activePiece.piece, this.state.activePiece.start, e.target.id)
 		}
 
@@ -175,55 +192,9 @@ export default class Game extends Component{
 
 		
 
-	    console.log(this.state);
+	    //console.log(this.state);
 	};
 
-	getPieceNotiation(id){
-
-		let bp = this.state.game.board_position;
-		console.log(bp);
-
-		for (const color in bp){
-			let clr = color;	
-			//console.log(clr);
-			var clrObj = bp[clr];
-			//console.log(clrObj);
-
-
-			for(const pcs in clrObj){
-				let pc = pcs;
-				
-				var pcsObj = clrObj[pc];
-				// console.log(pcs);
-				// console.log(pcsObj);
-				for(var i = 0; i < pcsObj.length; i++){
-					if(pcsObj[i] == id){
-
-						// this.cl_pclr = clr;
-						// this.cl_pc = pc;
-						// this.cl_pcn = String.fromCharCode( this.state.pieceNotations[clr][pc] );
-
-						// this.setState({
-						// 	pClr : clr,
-						// 	pc 	 : pc,
-						// 	pcN  : String.fromCharCode( this.state.pieceNotations[clr][pc] )
-						// });
-
-						console.log(pcsObj[i]);
-						console.log(clr);
-						console.log(pcs);
-						console.log(String.fromCharCode( this.state.pieceNotations[clr][pc] ));
-
-						return String.fromCharCode( this.state.pieceNotations[clr][pc] );
-					}
-				}
-			}
-
-		}
-
-		return "";
-	}
-	
 
 	render(){
 		//const cl = ['block', 'white-block'];
@@ -232,28 +203,28 @@ export default class Game extends Component{
 			<div className="chess-board">
 
 				<div className="block white-block" id="a8" onClick={(e) => this.activateOrMovePiece(e) }>
-					<Piece {...this.state.game.board_position} cl_id = {"a8"}  cl_pc = {""} cl_pclr = {""} cl_pcn = {this.getPieceNotiation("a8")}/>
+					<Piece {...this.state.game.board_position} cl_id = {"a8"}  cl_pc = {""} cl_pclr = {""}   />
 				</div>
 				<div className="block black-block" id="b8" onClick={(e) => this.activateOrMovePiece(e) }>
-					<Piece {...this.state.game.board_position} cl_id = {"b8"}  cl_pc = {""} cl_pclr = {""} cl_pcn = {this.getPieceNotiation("a8")}/>
+					<Piece {...this.state.game.board_position} cl_id = {"b8"}  cl_pc = {""} cl_pclr = {""}   />
 				</div>
 				<div className="block white-block" id="c8" onClick={(e) => this.activateOrMovePiece(e) }>
-					<Piece {...this.state.game.board_position} cl_id = {"c8"}  cl_pc = {""} cl_pclr = {""} cl_pcn = {this.getPieceNotiation("a8")}/>
+					<Piece {...this.state.game.board_position} cl_id = {"c8"}  cl_pc = {""} cl_pclr = {""}   />
 				</div>
 				<div className="block black-block" id="d8" onClick={(e) => this.activateOrMovePiece(e) }>
-					<Piece {...this.state.game.board_position} cl_id = {"d8"}  cl_pc = {""} cl_pclr = {""} cl_pcn = {this.getPieceNotiation("a8")}/>
+					<Piece {...this.state.game.board_position} cl_id = {"d8"}  cl_pc = {""} cl_pclr = {""}   />
 				</div>
 				<div className="block white-block" id="e8" onClick={(e) => this.activateOrMovePiece(e) }>
-					<Piece {...this.state.game.board_position} cl_id = {"e8"}  cl_pc = {""} cl_pclr = {""} cl_pcn = {this.getPieceNotiation("a8")}/>
+					<Piece {...this.state.game.board_position} cl_id = {"e8"}  cl_pc = {""} cl_pclr = {""}   />
 				</div>
 				<div className="block black-block" id="f8" onClick={(e) => this.activateOrMovePiece(e) }>
-					<Piece {...this.state.game.board_position} cl_id = {"f8"}  cl_pc = {""} cl_pclr = {""} cl_pcn = {this.getPieceNotiation("a8")}/>
+					<Piece {...this.state.game.board_position} cl_id = {"f8"}  cl_pc = {""} cl_pclr = {""}   />
 				</div>
 				<div className="block white-block" id="g8" onClick={(e) => this.activateOrMovePiece(e) }>
-					<Piece {...this.state.game.board_position} cl_id = {"g8"}  cl_pc = {""} cl_pclr = {""} cl_pcn = {this.getPieceNotiation("a8")}/>
+					<Piece {...this.state.game.board_position} cl_id = {"g8"}  cl_pc = {""} cl_pclr = {""}   />
 				</div>
 				<div className="block black-block" id="h8" onClick={(e) => this.activateOrMovePiece(e) }>
-					<Piece {...this.state.game.board_position} cl_id = {"h8"}  cl_pc = {""} cl_pclr = {""} cl_pcn = {this.getPieceNotiation("a8")}/>
+					<Piece {...this.state.game.board_position} cl_id = {"h8"}  cl_pc = {""} cl_pclr = {""}   />
 				</div>
 
 				
@@ -388,7 +359,7 @@ export default class Game extends Component{
 				
 
 				<div className="block white-block" id="a2" onClick={(e) => this.activateOrMovePiece(e) }>
-					<Piece {...this.state.game.board_position} cl_id = {"a2"}  cl_pc = {""} cl_pclr = {""} cl_pcn = {""} />
+					<Piece {...this.state.game.board_position} cl_id = {"a2"}  />
 				</div>
 				<div className="block black-block" id="b2" onClick={(e) => this.activateOrMovePiece(e)}>
 					<Piece {...this.state.game.board_position} cl_id = {"b2"}  />

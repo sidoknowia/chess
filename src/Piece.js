@@ -51,17 +51,19 @@ export default class Piece extends Component{
 	}
 
 	componentWillMount(){
-		//this.getPieceNotiation(this.props.cl_id);
+		this.getPieceNotiation(this.props.cl_id);
 	}
 
-	componentWillReceiveProps(){
+	componentWillReceiveProps(nextProps){
+		// console.log(this.props);
+		// console.log(nextProps);
 		this.getPieceNotiation(this.props.cl_id);
 	}
 
 	getPieceNotiation(id){
 
 		let bp = this.props.board_position;
-		console.log(bp);
+		//console.log(bp);
 
 		for (const color in bp){
 			let clr = color;	
@@ -89,12 +91,16 @@ export default class Piece extends Component{
 						// 	pcN  : String.fromCharCode( this.state.pieceNotations[clr][pc] )
 						// });
 
-						console.log(pcsObj[i]);
-						console.log(clr);
-						console.log(pcs);
-						console.log(String.fromCharCode( this.state.pieceNotations[clr][pc] ));
+						// console.log(pcsObj[i]);
+						// console.log(clr);
+						// console.log(pcs);
+						//console.log(String.fromCharCode( this.state.pieceNotations[clr][pc] ));
 
 						return String.fromCharCode( this.state.pieceNotations[clr][pc] );
+					} else {
+						this.cl_pclr = "";
+						this.cl_pc = "";
+						this.cl_pcn = null;
 					}
 				}
 			}
@@ -107,7 +113,7 @@ export default class Piece extends Component{
 
 	render(){
 		//let cl = "block "+ this.props.cl_n;
-		this.getPieceNotiation(this.props.cl_id);
+		//this.getPieceNotiation(this.props.cl_id);
 		return(
 			<span className="piece" datacolor={this.cl_pclr} datapiece={this.cl_pc} >{this.cl_pcn}</span>
 		)
