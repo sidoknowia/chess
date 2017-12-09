@@ -7,5 +7,14 @@ This is two-player chess game, built in javascript. Currently you can play only 
 In Progress Functionality
 
 - Allow Castle
-- Allow only legal moves
+- Allow En Passant
+
 - GUI in HTML
+	- Move Box
+
+
+V 2.0
+Move recomendation in done in python
+
+V 3.0
+Integrating GUI and Python Move recomendation engine
