@@ -49,13 +49,18 @@ export default class Game extends Component{
 		//this.moveactivateOrMovePiece = this.moveactivateOrMovePiece.bind(this);
 	}
 
-	make_move(color = null, piece ,start, end){
+	make_move(color = null, piece ,start, end, move_type){
 		let move;
 		let gm = JSON.parse(JSON.stringify(this.state.game.moves));
-		let valid = false;
+
+		let valid = this.checkIfLegalMove(color , piece, start, end, move_type, this.state.game.board_position.board_position);
+
+		if(!valid){
+			return false;
+		}
 
 		if(color == 'W'){
-			valid = true;
+			//valid = true;
 			if(valid){
 				move = {
 					'W' : 	[piece, start, end]
@@ -66,7 +71,7 @@ export default class Game extends Component{
 			}
 		}
 		if(color == 'B'){
-			valid = true;
+			//valid = true;
 			if(valid){
 				move = [piece, start, end];
 				gm.sort();
@@ -80,7 +85,7 @@ export default class Game extends Component{
 	}
 
 	update_board_position(color, piece, start, end, gm) {
-//JSON.parse(JSON.stringify(
+
 
 		let bpObj = this.state.game.board_position;
 		console.log("bpObj : " , bpObj)
@@ -164,8 +169,8 @@ export default class Game extends Component{
 			if(e.target.getAttribute('datacolor') == "W" || e.target.getAttribute('datacolor') == "B" ){ 
 				console.log("no active color of false");
 				if( e.target.getAttribute('datacolor') != this.state.activePiece.color ){
-					alert("Opponent child - takes move");
-					this.make_move(this.state.activePiece.color, this.state.activePiece.piece, this.state.activePiece.start, e.target.parentNode.id);
+					//alert("Opponent child - takes move");
+					this.make_move(this.state.activePiece.color, this.state.activePiece.piece, this.state.activePiece.start, e.target.parentNode.id, 'takes');
 					return "";
 				}
 			}
@@ -184,8 +189,8 @@ export default class Game extends Component{
 			return "";
 		}
 
-		if( e.target.id ) { alert("no child - make move");
-			this.make_move(this.state.activePiece.color, this.state.activePiece.piece, this.state.activePiece.start, e.target.id)
+		if( e.target.id ) {// alert("no child - make move");
+			this.make_move(this.state.activePiece.color, this.state.activePiece.piece, this.state.activePiece.start, e.target.id, 'move')
 		}
 
 		
@@ -195,6 +200,190 @@ export default class Game extends Component{
 	    //console.log(this.state);
 	};
 
+	getBoardMatrix(s,n){
+		var mat = [];
+		
+		for(var i = 0; i<s.length; i++){
+			var col = [];
+			for(var j = 0; j < n.length; j++){
+				var cell = s[i]+n[j];
+				col.push(cell);
+			}
+			mat.push(col);
+		}
+
+		return mat;
+	}
+
+	searchBoardForPieces(positions, board_position){
+		//console.log(" pcs checking " + positions);
+
+		if(typeof(positions) == 'string'){
+				//console.log(" pcs checking str", board_position);
+
+			for (var color in board_position){
+				console.log(" color", color);
+				var clrObj = board_position[color];
+
+						//console.log(" clrObj checking ",clrObj);
+
+				for(var pcs in clrObj){
+					var pcsObj = clrObj[pcs];
+
+						//console.log(" pcsObj checking ",pcsObj);
+
+					for(var i = 0; i < pcsObj.length; i++){
+						//console.log(" pcs checking ", pcsObj[i] + "  " + positions)
+						if(pcsObj[i] == positions){
+							return false;
+						}
+					}
+
+				}
+
+			}
+
+			return true;
+		}
+
+		return true;
+	}
+
+	checkIfLegalMove(color , piece, start, end, move_type ,board_position){
+		let canMove = false;
+		let squares = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+		let numbers = ['1', '2', '3', '4', '5', '6', '7', '8'];
+		let matrix = this.getBoardMatrix (squares, numbers);
+		console.log(matrix);
+
+		var startBox = start.split(""); //match(/\d+$/)[0];
+		var startBoxAlph = startBox[0];
+		var startBoxNumber = parseInt(startBox[1]);
+
+		var endBox = end.split(""); //.match(/\d+$/)[0];
+		var endBoxAlph = endBox[0];
+		var endBoxNumber = parseInt(endBox[1]);
+
+
+		switch (piece){
+			case 'P':
+				if(color == 'W'){
+
+					if(startBoxNumber < endBoxNumber && (endBoxNumber - startBoxNumber <= 2) ){
+
+						if(move_type == 'takes'){ console.log("n ");
+							if(startBoxAlph != endBoxAlph){ 
+
+								var startBoxindexOf = squares.indexOf(startBoxAlph);
+								var validAlph = false;
+console.log("n1 ", startBoxindexOf + " : " + squares[startBoxindexOf+1] + "  " + squares[startBoxindexOf-1] + " " + endBoxAlph);
+
+								if( (startBoxAlph == 'a' && endBoxAlph == 'b')  || (startBoxAlph == 'h' && endBoxAlph == 'g')){
+									validAlph = true;
+								} else if ( endBoxAlph == squares[startBoxindexOf+1] || endBoxAlph == squares[startBoxindexOf-1] ){
+									validAlph = true;
+								}
+
+								if(validAlph){ console.log("n W", endBoxNumber + " " + startBoxNumber);
+									if( endBoxNumber == startBoxNumber + 1 ){
+										canMove = true;
+									} 
+								}
+							}
+							
+							
+						} else if(move_type == 'move'){
+
+							if(startBoxAlph == endBoxAlph){
+								if(startBoxNumber == 2 && endBoxNumber <= 4){
+									if(endBoxNumber == 4){
+										var middleSquare = endBoxAlph+3;
+										//alert(middleSquare)
+										canMove = this.searchBoardForPieces(middleSquare, board_position);
+									} else {
+										canMove = true;
+									}
+									
+								} else if (startBoxNumber >= 3 && (endBoxNumber == startBoxNumber + 1) ){
+									canMove = true;
+								}
+							}
+							
+						}
+						
+					}
+
+				} else if (color == 'B'){
+					if(startBoxNumber > endBoxNumber && ( startBoxNumber - endBoxNumber <= 2) ){
+
+						if(move_type == 'takes'){
+							if(startBoxAlph != endBoxAlph){ 
+
+								var startBoxindexOf = squares.indexOf(startBoxAlph);
+								var validAlph = false;
+//console.log("n1 ", startBoxindexOf + " : " + squares[startBoxindexOf+1] + "  " + squares[startBoxindexOf-1] + " " + endBoxAlph);
+
+								if( (startBoxAlph == 'a' && endBoxAlph == 'b')  || (startBoxAlph == 'h' && endBoxAlph == 'g')){
+									validAlph = true;
+								} else if ( endBoxAlph == squares[startBoxindexOf+1] || endBoxAlph == squares[startBoxindexOf-1] ){
+									validAlph = true;
+								}
+
+								if(validAlph){
+									if( endBoxNumber == startBoxNumber - 1 ){
+										canMove = true;
+									} 
+								}
+							}
+							
+						} else if(move_type == 'move'){
+
+							if(startBoxAlph == endBoxAlph){
+								if(startBoxNumber == 7 && endBoxNumber >= 5){
+									if(endBoxNumber == 5){
+										var middleSquare = endBoxAlph+6
+										canMove = this.searchBoardForPieces(middleSquare, board_position);
+									} else {
+										canMove = true;
+									}
+									
+								} else if (startBoxNumber <= 6 && (endBoxNumber == startBoxNumber - 1) ){
+									canMove = true;
+								}
+							}
+							
+						}
+						
+					}
+				}
+				
+
+			break;
+
+			case 'R':
+				canMove = true;
+			break;
+
+			case 'N':
+				canMove = true;
+			break;
+
+			case 'B':
+				canMove = true;
+			break;
+
+			case 'Q':
+				canMove = true;
+			break;
+
+			case 'K':
+				canMove = true;
+			break;
+
+		}
+
+		return canMove;
+	}
 
 	render(){
 		//const cl = ['block', 'white-block'];
