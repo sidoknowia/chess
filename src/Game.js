@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Piece  from "./Piece.js";
-
 const Board = require("./Board.js");
  
 
@@ -42,7 +41,11 @@ export default class Game extends Component{
 					'K' : "9812",
 					'P' : "9817"
 				}
-			}
+			},
+			move_color : 'W',
+			in_check : false,
+			white_occupied_squares : ['a1','b1','c1','d1','e1','f1','g1','h1','a2','b2','c2','d2','e2','f2','g2','h2'],
+			black_occupied_squares : ['a8','b8','c8','d8','e8','f8','g8','h8','a7','b7','c7','d7','e7','f7','g7','h7']
 		};
 
 		this.activateOrMovePiece = this.activateOrMovePiece.bind(this);
@@ -59,6 +62,9 @@ export default class Game extends Component{
 			return false;
 		}
 
+		let is_in_chk = this.check_if_check(color, piece, end, this.state.game.board_position.board_position);
+
+
 		if(color == 'W'){
 			//valid = true;
 			if(valid){
@@ -67,15 +73,23 @@ export default class Game extends Component{
 				}
 				gm.push(move);
 
+				this.setState({
+					move_color : 'B'
+				});
 				this.update_board_position(color, piece, start, end, gm);
 			}
 		}
+
 		if(color == 'B'){
 			//valid = true;
 			if(valid){
 				move = [piece, start, end];
 				gm.sort();
 				gm[gm.length-1]["B"] = move;
+
+				this.setState({
+					move_color : 'W'
+				});
 
 				this.update_board_position(color, piece, start, end, gm);
 			}
@@ -84,6 +98,9 @@ export default class Game extends Component{
 		console.log(move);
 	}
 
+/*
+	Updating Position on Board -- For UI only
+*/
 	update_board_position(color, piece, start, end, gm) {
 
 
@@ -160,23 +177,29 @@ export default class Game extends Component{
 	activateOrMovePiece (e, color, piece) {
 		//console.log(color);
 		//console.log(piece);
-		console.log("parent - self id : ", e.target.parentNode.id); //d2
-		console.log("target - " ,e.target.id); //null
+		//console.log("parent - self id : ", e.target.parentNode.id); //d2
+		//console.log("target - " ,e.target.id); //null
 		//console.log()
-		console.log(e.target.getAttribute('datacolor'));
+		//console.log(e.target.getAttribute('datacolor'));
 
-		if(this.state.activePiece.color != "" ){ console.log("no active color");
+		if(this.state.activePiece.color != "" ){ 
+			//console.log("peice is selected");
 			if(e.target.getAttribute('datacolor') == "W" || e.target.getAttribute('datacolor') == "B" ){ 
-				console.log("no active color of false");
+				//console.log("end position has a piece");
 				if( e.target.getAttribute('datacolor') != this.state.activePiece.color ){
-					//alert("Opponent child - takes move");
+					//console.log("Opponent child - takes move");
 					this.make_move(this.state.activePiece.color, this.state.activePiece.piece, this.state.activePiece.start, e.target.parentNode.id, 'takes');
 					return "";
 				}
 			}
 		}
 
-		if (!e.target.id){
+		if (!e.target.id){ // console.log("Activating a piece")
+
+			if(this.state.move_color != e.target.getAttribute('datacolor')){  
+				// making sure it is correct person's turn. If colors don't match - same person is moving twice
+				return false;
+			}
 
 			this.setState({
 		      activePiece: {
@@ -189,13 +212,9 @@ export default class Game extends Component{
 			return "";
 		}
 
-		if( e.target.id ) {// alert("no child - make move");
+		if( e.target.id ) { // console.log("no child - make move");
 			this.make_move(this.state.activePiece.color, this.state.activePiece.piece, this.state.activePiece.start, e.target.id, 'move')
 		}
-
-		
-
-		
 
 	    //console.log(this.state);
 	};
@@ -203,13 +222,13 @@ export default class Game extends Component{
 	getBoardMatrix(s,n){
 		var mat = [];
 		
-		for(var i = 0; i<s.length; i++){
-			var col = [];
-			for(var j = 0; j < n.length; j++){
-				var cell = s[i]+n[j];
-				col.push(cell);
+		for(var i = 0; i<n.length; i++){
+			var row = [];
+			for(var j = 0; j < s.length; j++){
+				var cell = s[j]+n[i];
+				row.push(cell);
 			}
-			mat.push(col);
+			mat.push(row);
 		}
 
 		return mat;
@@ -249,12 +268,12 @@ export default class Game extends Component{
 		return true;
 	}
 
-	checkIfLegalMove(color , piece, start, end, move_type ,board_position){
+	checkIfLegalMove(color , piece, start, end, move_type,board_position){
 		let canMove = false;
 		let squares = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 		let numbers = ['1', '2', '3', '4', '5', '6', '7', '8'];
-		let matrix = this.getBoardMatrix (squares, numbers);
-		console.log(matrix);
+		
+		//console.log(matrix);
 
 		var startBox = start.split(""); //match(/\d+$/)[0];
 		var startBoxAlph = startBox[0];
@@ -276,7 +295,7 @@ export default class Game extends Component{
 
 								var startBoxindexOf = squares.indexOf(startBoxAlph);
 								var validAlph = false;
-console.log("n1 ", startBoxindexOf + " : " + squares[startBoxindexOf+1] + "  " + squares[startBoxindexOf-1] + " " + endBoxAlph);
+								console.log("n1 ", startBoxindexOf + " : " + squares[startBoxindexOf+1] + "  " + squares[startBoxindexOf-1] + " " + endBoxAlph);
 
 								if( (startBoxAlph == 'a' && endBoxAlph == 'b')  || (startBoxAlph == 'h' && endBoxAlph == 'g')){
 									validAlph = true;
@@ -321,7 +340,7 @@ console.log("n1 ", startBoxindexOf + " : " + squares[startBoxindexOf+1] + "  " +
 
 								var startBoxindexOf = squares.indexOf(startBoxAlph);
 								var validAlph = false;
-//console.log("n1 ", startBoxindexOf + " : " + squares[startBoxindexOf+1] + "  " + squares[startBoxindexOf-1] + " " + endBoxAlph);
+									//console.log("n1 ", startBoxindexOf + " : " + squares[startBoxindexOf+1] + "  " + squares[startBoxindexOf-1] + " " + endBoxAlph);
 
 								if( (startBoxAlph == 'a' && endBoxAlph == 'b')  || (startBoxAlph == 'h' && endBoxAlph == 'g')){
 									validAlph = true;
@@ -357,7 +376,6 @@ console.log("n1 ", startBoxindexOf + " : " + squares[startBoxindexOf+1] + "  " +
 					}
 				}
 				
-
 			break;
 
 			case 'R':
@@ -377,12 +395,90 @@ console.log("n1 ", startBoxindexOf + " : " + squares[startBoxindexOf+1] + "  " +
 			break;
 
 			case 'K':
+
 				canMove = true;
 			break;
 
 		}
 
 		return canMove;
+	}
+
+	check_if_check(color, piece, end, board_position){
+		var legal_squares = this.get_legal_squares(color,piece,end,board_position);
+	}
+
+	get_legal_squares(color,piece,end,board_position){
+
+		let squares = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+		let numbers = ['1', '2', '3', '4', '5', '6', '7', '8'];
+		var legal_squares = [];
+		let matrix = this.getBoardMatrix (squares, numbers);
+
+		switch(piece){
+			case 'P':
+
+				if(color == 'W'){
+
+				}
+
+				if(color == 'B'){
+
+				}
+
+			break;
+
+			case 'R':
+				var row = this.get_matrix_row(matrix, squares, numbers, end);
+				var col = this.get_matrix_colomn(matrix, squares, numbers, end);
+
+				console.log(row);
+				console.log(col);
+			break;
+
+			case 'N':
+				canMove = true;
+			break;
+
+			case 'B':
+				canMove = true;
+			break;
+
+			case 'Q':
+				canMove = true;
+			break;
+
+			case 'K':
+
+				canMove = true;
+			break;
+
+		}
+
+	}
+
+	get_matrix_row(matrix, squares, numbers, position){
+
+		var endBox = position.split(""); 
+		var endBoxNumber = parseInt(endBox[1]);
+		//console.log(matrix[endBoxNumber - 1]);
+		return matrix[endBoxNumber - 1];
+	}
+
+	get_matrix_colomn(matrix, squares, numbers, position){
+		var endBox = position.split(""); 
+		var endBoxAlph = endBox[0];
+		//var i = squares.indexOf(endBoxAlph)+1;
+
+		var col = [];
+		for(var j = 0; j<numbers.length;j++){
+			col.push(endBoxAlph+j)
+		}
+		return col;
+	}
+
+	get_matrix_diagnol(matrix, squares, numbers, position){
+
 	}
 
 	render(){
