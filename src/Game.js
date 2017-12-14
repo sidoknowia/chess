@@ -44,8 +44,11 @@ export default class Game extends Component{
 			},
 			move_color : 'W',
 			in_check : false,
-			white_occupied_squares : ['a1','b1','c1','d1','e1','f1','g1','h1','a2','b2','c2','d2','e2','f2','g2','h2'],
-			black_occupied_squares : ['a8','b8','c8','d8','e8','f8','g8','h8','a7','b7','c7','d7','e7','f7','g7','h7']
+			occupied_squares : ['a1','b1','c1','d1','e1','f1','g1','h1',
+								'a2','b2','c2','d2','e2','f2','g2','h2',
+								'a8','b8','c8','d8','e8','f8','g8','h8',
+								'a7','b7','c7','d7','e7','f7','g7','h7']
+			
 		};
 
 		this.activateOrMovePiece = this.activateOrMovePiece.bind(this);
@@ -55,6 +58,7 @@ export default class Game extends Component{
 	make_move(color = null, piece ,start, end, move_type){
 		let move;
 		let gm = JSON.parse(JSON.stringify(this.state.game.moves));
+		let os = JSON.parse(JSON.stringify(this.state.occupied_squares));
 
 		let valid = this.checkIfLegalMove(color , piece, start, end, move_type, this.state.game.board_position.board_position);
 
@@ -62,7 +66,7 @@ export default class Game extends Component{
 			return false;
 		}
 
-		let is_in_chk = this.check_if_check(color, piece, end, this.state.game.board_position.board_position);
+		let is_in_chk = this.check_if_check(color, piece, end, this.state.game.board_position.board_position,this.state.occupied_squares);
 
 
 		if(color == 'W'){
@@ -76,7 +80,7 @@ export default class Game extends Component{
 				this.setState({
 					move_color : 'B'
 				});
-				this.update_board_position(color, piece, start, end, gm);
+				
 			}
 		}
 
@@ -91,10 +95,24 @@ export default class Game extends Component{
 					move_color : 'W'
 				});
 
-				this.update_board_position(color, piece, start, end, gm);
+				//this.update_board_position(color, piece, start, end, gm);
 			}
 		}
 
+		let startI = os.indexOf(start); console.log("start ", startI)
+		let endI   = os.indexOf(end);
+		if(startI != -1){
+			os[startI] = end;
+			if(endI != -1){
+				os[endI] = null;
+			}
+		}
+
+		this.setState({
+			occupied_squares : os
+		})
+
+		this.update_board_position(color, piece, start, end, gm);
 		console.log(move);
 	}
 
@@ -153,7 +171,7 @@ export default class Game extends Component{
 			}
 
 			console.log("board_position : " , this.state.game.board_position);
-			console.log("Clone Obj : " , bpObj);
+			//console.log("Clone Obj : " , bpObj);
 		}
 
 		this.setState({
@@ -170,8 +188,8 @@ export default class Game extends Component{
 	    });
 
 
-		console.log("after update ",this.state.game);
-		this.forceUpdate();
+		console.log("after update ",this.state);
+		//this.forceUpdate();
 	};
 
 	activateOrMovePiece (e, color, piece) {
@@ -268,7 +286,7 @@ export default class Game extends Component{
 		return true;
 	}
 
-	checkIfLegalMove(color , piece, start, end, move_type,board_position){
+	checkIfLegalMove(color, piece, start, end, move_type, board_position){
 		let canMove = false;
 		let squares = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 		let numbers = ['1', '2', '3', '4', '5', '6', '7', '8'];
@@ -404,12 +422,12 @@ export default class Game extends Component{
 		return canMove;
 	}
 
-	check_if_check(color, piece, end, board_position){
-		var legal_squares = this.get_legal_squares(color,piece,end,board_position);
+	check_if_check(color, piece, end, board_position,occupied_squares){
+		var legal_squares = this.get_legal_squares(color,piece,end,board_position, occupied_squares);
 	}
 
-	get_legal_squares(color,piece,end,board_position){
-
+	get_legal_squares(color,piece,end,board_position,occupied_squares){
+		var canMove;
 		let squares = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 		let numbers = ['1', '2', '3', '4', '5', '6', '7', '8'];
 		var legal_squares = [];
@@ -431,9 +449,33 @@ export default class Game extends Component{
 			case 'R':
 				var row = this.get_matrix_row(matrix, squares, numbers, end);
 				var col = this.get_matrix_colomn(matrix, squares, numbers, end);
+				var rowA = [],
+					colA = [];
 
-				console.log(row);
 				console.log(col);
+
+				row.forEach((r) => {
+					
+					if(occupied_squares.indexOf(r) == -1 && end[1] == r[1]){
+						rowA.push(r);
+					}
+				})
+
+				col.forEach((c) => {
+					
+					if(end[0] == c[0]){
+						if(occupied_squares.indexOf(c) == -1){
+							colA.push(c);
+						} else {
+							console.log(end[0] + " " + c[0] + " " + end[1] + " " + c[1] );
+							return;
+						}
+					}
+					
+				})
+
+				console.log(rowA);
+				console.log(colA);
 			break;
 
 			case 'N':
@@ -471,7 +513,7 @@ export default class Game extends Component{
 		//var i = squares.indexOf(endBoxAlph)+1;
 
 		var col = [];
-		for(var j = 0; j<numbers.length;j++){
+		for(var j = 1; j<=numbers.length;j++){
 			col.push(endBoxAlph+j)
 		}
 		return col;
